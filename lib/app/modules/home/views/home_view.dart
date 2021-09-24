@@ -23,44 +23,64 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    /**
+     *  final heightApp = Get.height;
+     *  ini untuk mengambil tinggi dari suatu layar handphone, dll.
+     *
+     *  tambahkan contex.mediaQueryPadding.top dan context.mediaQueryPadding.bottom
+     *  untuk mengambil safe area bagian atas dan bawah dari suatu device
+     */
+
+    final heightApp = Get.height -
+        context.mediaQueryPadding.top -
+        context.mediaQueryPadding.bottom;
+
+    final widthApp = Get.width;
+
     return Scaffold(
       backgroundColor: context.theme.backgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(25),
           child: Column(
             children: [
               // Tampilan untuk layar perhitungan
-              Container(
-                width: double.infinity,
-                height: 300,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    // Angka untuk melihat hasil dari perhitungan
-                    Text(
-                      "900",
-                      style: TextStyle(
-                        fontSize: 70,
+              Expanded(
+                // Expanded untuk mengambil ukuran sisa dari container ke-2
+                child: Container(
+                  width: widthApp,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(height: 50),
+                      SingleChildScrollView(
+                        // Berfungsi untuk apabila angkanya terlalu panjang maka bisa di-scroll ke arah horizontal (kanan-kiri)
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          // Angka untuk melihat hasil dari perhitungan
+                          "900",
+                          style: TextStyle(
+                            fontSize: 70,
+                          ),
+                        ),
                       ),
-                    ),
-                    // Angka untuk melihat perhitungan matematika
-                    Text(
-                      "90x10",
-                      style: TextStyle(
-                          fontSize: 25, color: context.theme.accentColor),
-                    ),
-                  ],
+                      // Angka untuk melihat perhitungan matematika
+                      Text(
+                        "90x10",
+                        style: TextStyle(
+                            fontSize: 25, color: context.theme.accentColor),
+                      ),
+                      SizedBox(height: 25),
+                    ],
+                  ),
                 ),
               ),
               // Tombol untuk melakukan perhitungan
               Container(
-                width: double.infinity,
-                height: 500,
+                width: widthApp,
+                // Mengambil layar sebesar 60% untuk Container ke-2
+                height: heightApp * 0.6,
                 // color: Colors.red,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,8 +104,9 @@ class HomeView extends GetView<HomeController> {
                             ),
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
-                              width: 60,
-                              height: 60,
+                              // menambahkan width dan heigh agar responsive untuk tombol =
+                              width: Get.width * 0.165,
+                              height: Get.width * 0.165,
                               child: Center(
                                 child: Icon(
                                   Icons.color_lens_outlined,
@@ -151,8 +172,9 @@ class HomeView extends GetView<HomeController> {
                             onTap: () {},
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
-                              width: 195,
-                              height: 60,
+                              // menambahkan width dan heigh agar responsive untuk tombol =
+                              width: Get.width * 0.165 * 2.5,
+                              height: Get.width * 0.15,
                               child: Center(
                                 child: Text(
                                   "=",
@@ -197,8 +219,8 @@ class ItemButtonCustom extends StatelessWidget {
         onTap: () {},
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          width: 60,
-          height: 60,
+          width: Get.width * 0.165,
+          height: Get.width * 0.165,
           child: Center(
             child: Text(
               text,
