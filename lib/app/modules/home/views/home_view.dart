@@ -62,20 +62,24 @@ class HomeView extends GetView<HomeController> {
                       SingleChildScrollView(
                         // Berfungsi untuk apabila angkanya terlalu panjang maka bisa di-scroll ke arah horizontal (kanan-kiri)
                         scrollDirection: Axis.horizontal,
-                        child: Text(
-                          // Angka untuk melihat hasil dari perhitungan
-                          "900",
-                          style: TextStyle(
-                            fontSize: 70,
-                          ),
-                        ),
+                        child: Obx(() {
+                          return Text(
+                            // Angka untuk melihat hasil dari perhitungan
+                            "${controller.hasil}",
+                            style: TextStyle(
+                              fontSize: 70,
+                            ),
+                          );
+                        }),
                       ),
                       // Angka untuk melihat perhitungan matematika
-                      Text(
-                        "90x10",
-                        style: TextStyle(
-                            fontSize: 25, color: context.theme.accentColor),
-                      ),
+                      Obx(() {
+                        return Text(
+                          "${controller.text}",
+                          style: TextStyle(
+                              fontSize: 25, color: context.theme.accentColor),
+                        );
+                      }),
                       SizedBox(height: 25),
                     ],
                   ),
@@ -94,9 +98,12 @@ class HomeView extends GetView<HomeController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ItemButtonCustom(text: "^"),
-                        ItemButtonCustom(text: "C"),
-                        ItemButtonCustom(text: "AC"),
+                        ItemButtonCustom(
+                          text: "^",
+                          value: "^",
+                        ),
+                        ItemButtonCustom(text: "C", value: "Clear"),
+                        ItemButtonCustom(text: "AC", value: "AllClear"),
                         // Mengubah theme dark atau light
                         Material(
                           elevation: 7,
@@ -127,54 +134,54 @@ class HomeView extends GetView<HomeController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ItemButtonCustom(text: "("),
-                        ItemButtonCustom(text: ")"),
-                        ItemButtonCustom(text: "%"),
-                        ItemButtonCustom(text: ":"),
+                        ItemButtonCustom(text: "(", value: "("),
+                        ItemButtonCustom(text: ")", value: ")"),
+                        ItemButtonCustom(text: "%", value: "%"),
+                        ItemButtonCustom(text: ":", value: "/"),
                       ],
                     ),
                     // Baris ketiga
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ItemButtonCustom(text: "7"),
-                        ItemButtonCustom(text: "8"),
-                        ItemButtonCustom(text: "9"),
-                        ItemButtonCustom(text: "x"),
+                        ItemButtonCustom(text: "7", value: "7"),
+                        ItemButtonCustom(text: "8", value: "8"),
+                        ItemButtonCustom(text: "9", value: "9"),
+                        ItemButtonCustom(text: "x", value: "*"),
                       ],
                     ),
                     // Baris keempat
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ItemButtonCustom(text: "4"),
-                        ItemButtonCustom(text: "5"),
-                        ItemButtonCustom(text: "6"),
-                        ItemButtonCustom(text: "-"),
+                        ItemButtonCustom(text: "4", value: "4"),
+                        ItemButtonCustom(text: "5", value: "5"),
+                        ItemButtonCustom(text: "6", value: "6"),
+                        ItemButtonCustom(text: "-", value: "-"),
                       ],
                     ),
                     // Baris kelima
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ItemButtonCustom(text: "1"),
-                        ItemButtonCustom(text: "2"),
-                        ItemButtonCustom(text: "3"),
-                        ItemButtonCustom(text: "+"),
+                        ItemButtonCustom(text: "1", value: "1"),
+                        ItemButtonCustom(text: "2", value: "2"),
+                        ItemButtonCustom(text: "3", value: "3"),
+                        ItemButtonCustom(text: "+", value: "+"),
                       ],
                     ),
                     // Baris keenam
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ItemButtonCustom(text: "0"),
-                        ItemButtonCustom(text: "."),
+                        ItemButtonCustom(text: "0", value: "0"),
+                        ItemButtonCustom(text: ".", value: "."),
                         Material(
                           elevation: 7,
                           borderRadius: BorderRadius.circular(10),
                           color: context.theme.primaryColor,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () => controller.eksekusi(),
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
                               // menambahkan width dan heigh agar responsive untuk tombol =
@@ -206,13 +213,14 @@ class HomeView extends GetView<HomeController> {
   }
 }
 
-class ItemButtonCustom extends StatelessWidget {
+class ItemButtonCustom extends GetView<HomeController> {
   const ItemButtonCustom({
     Key? key,
     required this.text,
+    required this.value,
   }) : super(key: key);
 
-  final String text;
+  final String text, value;
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +229,9 @@ class ItemButtonCustom extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       color: context.theme.backgroundColor,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          controller.changeText(value);
+        },
         borderRadius: BorderRadius.circular(10),
         child: Container(
           width: Get.width * 0.165,
