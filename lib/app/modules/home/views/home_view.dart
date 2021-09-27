@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -23,6 +24,10 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    // Create device orientation always up (portrait)
+    // Pasangnya ketika build view-nya
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     /**
      *  final heightApp = Get.height;
      *  ini untuk mengambil tinggi dari suatu layar handphone, dll.
